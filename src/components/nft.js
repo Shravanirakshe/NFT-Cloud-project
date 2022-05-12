@@ -7,7 +7,7 @@ import Button from 'react-bootstrap/Button';
 class Nft extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { imgSrc: "https://gmedia.playstation.com/is/image/SIEPDC/ps-plus-cloud-storage-dark-icon-01-en-25sep20?$native--t$",
+        this.state = { imgSrc: "https://pic.onlinewebfonts.com/svg/img_148071.png",
                         price: '',
                         name : '',
                         owner : '',
@@ -26,14 +26,45 @@ class Nft extends React.Component {
         this.setState({
             selectedFile : event.target.files[0]
           })
-          console.log(this.state.imgSrc)
+          //console.log(this.state.imgSrc)
       
     }
 
     onClickCreate = (event) => {
+        const formData = new FormData();
+
+      
+        formData.append('File', this.state.selectedFile);
+        formData.append('Name', this.state.name);
+        formData.append('Owner', this.state.owner);
+        formData.append('Price', this.state.price);
+
+        console.log("The Form Data is ");
+        for (var value of formData.values()) {
+            console.log(value);
+         }
+
+
+
+        fetch(
+			'',
+			{
+				method: 'POST',
+				body: formData,
+			}
+		)
+			.then((response) => response.json())
+			.then((result) => {
+				console.log('Success:', result);
+			})
+			.catch((error) => {
+				console.error('Error:', error);
+			});
+
+
+
         
-        // alert('Your NFT was created!');
-        // event.preventDefault();
+        
       
 
 
