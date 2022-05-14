@@ -34,6 +34,17 @@ class Nft extends React.Component {
 
       reader.readAsArrayBuffer(this.state.selectedFile)
 
+            var myHeaders = new Headers();
+            //myHeaders.append("x-amz-meta-customLabels",'');
+            myHeaders.append("Content-Type", "image/jpeg");
+            
+            myHeaders.append("x-amz-meta-name", this.state.name);
+            myHeaders.append("x-amz-meta-owner", '' );
+            myHeaders.append("x-amz-meta-price", this.state.price);
+
+            var headers =  { 'name': this.state.name, 'owner': this.state.owner,'price': this.state.price }
+
+            console.log("myHeaders",headers);
       
            reader.onload = function (event ) {
             var elem = document.getElementById('formFile').value;
@@ -45,12 +56,8 @@ class Nft extends React.Component {
             console.log("Reader Object",event.target.result)
             console.log("Reader ",reader.result)
 
-            var myHeaders = new Headers();
-            //myHeaders.append("x-amz-meta-customLabels",'');
-            myHeaders.append("Content-Type", "image/jpeg");
-    
+
             var file = new Uint8Array(reader.result);
-            console.log("Fileee objectt",file);
 
           
             var requestOptions = {
@@ -59,13 +66,15 @@ class Nft extends React.Component {
             body: file,
             redirect: 'follow'
             };
+
+            console.log("requestOptions",requestOptions);
+
     
             fetch(`https://vwgyys73bb.execute-api.us-east-1.amazonaws.com/dev/nft_upload/finvest-images/${name}`, requestOptions)
             .then(response => response.text())
-            .then(result => console.log(result)).then(alert("Photo uploaded successfully!"))
+            .then(result => console.log(result)).then(alert("Created NFT Successfully! It will be listed in the Marketplace Shortly"))
             .catch(error => console.log('error', error));
 
-            console.log("Uploadded")
             
         }
        
@@ -258,16 +267,16 @@ class Nft extends React.Component {
         </Form.Group>
         <br/>    
       <Form.Group>
-          <Form.Label>Enter price of NFT $</Form.Label>
+          <Form.Label>Enter price of listing your NFT in ETH</Form.Label>
           <Form.Control  value={this.state.price} type="number" onChange={(e) => this.handleChangePrice(e)}
-                        placeholder="Enter price of NFT $" />
+                        placeholder="Enter price of NFT ETH" />
         </Form.Group>
         <br/>  
-        <Form.Group>
+        {/* <Form.Group>
           <Form.Label>Enter your Owner name</Form.Label>
           <Form.Control type="text" 
                         placeholder="Enter your Owner name" value = {this.state.owner} onChange={(e) => this.handleChangeOwner(e)} />
-        </Form.Group>
+        </Form.Group> */}
        <div  style = {{ padding : '10px'}}>
         <Button variant="primary" onClick = {(e) => this.onClickCreate(e)}>
            Create
