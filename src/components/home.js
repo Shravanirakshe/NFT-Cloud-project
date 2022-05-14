@@ -1,4 +1,5 @@
 import React from 'react';
+import {  withAuthenticator} from '@aws-amplify/ui-react';
 
 // const animals =  ["Dog", "Bird", "Cat", "Mouse", "Horse"]
 class Home extends React.Component {
@@ -59,5 +60,5 @@ class Home extends React.Component {
     }
   }
 
-export default Home;
+export default withAuthenticator(Home);
 
