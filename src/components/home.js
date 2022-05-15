@@ -60,7 +60,7 @@ class Home extends React.Component {
   
           fetch(`https://bjz2x882zl.execute-api.us-east-1.amazonaws.com/buy-nft`, requestOptions)
           .then(response => response.text())
-          .then(result => console.log(result)).then(alert("Created NFT Successfully! It will be listed in the Marketplace Shortly"))
+          .then(result => console.log(result)).then(alert("Your NFT purchase has been successful! You will receive an email shortly."))
           .catch(error => console.log('error', error));
     
       }
