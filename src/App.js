@@ -9,7 +9,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import { Route, Routes } from 'react-router-dom';
 import Home from './components/home'
 import Nft from './components/nft'
-
+import Mylist from './components/mylist'
 
 Amplify.configure(awsconfig)
 
@@ -23,6 +23,7 @@ function App() {
         
           <Route exact path='/home' element={< Home />}></Route>
           <Route exact path='/nft' element={< Nft />}></Route>
+          <Route exact path='/mylist' element={< Mylist />}></Route>
 
       </Routes>
     

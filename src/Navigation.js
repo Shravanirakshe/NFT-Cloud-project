@@ -45,8 +45,8 @@ const Navigation= () =>{
     <Navbar.Brand href="/home">Finvest</Navbar.Brand>
     <Nav className="me-auto">
       <Nav.Link href="/home">Home</Nav.Link>
-      <Nav.Link href="/nft">NFT</Nav.Link>
-      <Nav.Link href="/watchlist">Watchlist</Nav.Link>
+      <Nav.Link href="/nft">+ NFT</Nav.Link>
+      <Nav.Link href="/mylist">My List</Nav.Link>
     </Nav>
     <div style = {{width :'100px'}}>
     <AmplifySignOut/>

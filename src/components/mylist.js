@@ -10,37 +10,23 @@ import { Auth } from 'aws-amplify';
 
 
 // const animals =  ["Dog", "Bird", "Cat", "Mouse", "Horse"]
-class Home extends React.Component {
+class Mylist extends React.Component {
     constructor(props) {
         super(props);
         this.state = { nft_array: [] ,
-        auth : "hello"};
+        auth : {}};
       }
 
     
-   
+  
      
-      async componentDidMount() {
-     
-
-      //  const response = await Auth.currentSession()
-      //   .then((data) => {
-      //     console.log(data)
-      //      return data
-      //   }
-        
-      //   )
-      //   .catch(err => err);
-
-      // await console.log("Response",response)
-      const { attributes } = await Auth.currentAuthenticatedUser();
-      console.log("Response",attributes)
-
+    componentDidMount() {
       
-        fetch("https://vwgyys73bb.execute-api.us-east-1.amazonaws.com/dev/all_nft")
+        fetch("https://vwgyys73bb.execute-api.us-east-1.amazonaws.com/dev/nft")
           .then(res => res.json())
           .then(
             (result) => {
+                console.log(result)
                 this.setState({
                     nft_array : result.Items
                   });
@@ -72,7 +58,7 @@ class Home extends React.Component {
             <img class="card-img-top" style = {{width : '300px', height : '200px'}} src={nft.nft_uri} alt="Card image cap"></img>
             <p class="card-text">Owner {nft.username}</p>
             <p class="card-text">{"Price" + " " + "Eth" + " " + nft.nft_price}</p>
-            <a href="#" class="btn btn-primary">Buy NFT</a>
+            <a href="#" class="btn btn-primary">Sell NFT</a>
           </div>
         </div>
       </div>
@@ -87,4 +73,4 @@ class Home extends React.Component {
     }
   }
 
-export default withAuthenticator(Home);
+export default withAuthenticator(Mylist);
