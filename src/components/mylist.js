@@ -14,15 +14,34 @@ class Mylist extends React.Component {
     constructor(props) {
         super(props);
         this.state = { nft_array: [] ,
-        auth : {}};
+                       auth : {},
+                       email : "",
+                       username : ""         };
       }
 
     
   
      
-    componentDidMount() {
+   async componentDidMount() {
+        const response = await Auth.currentSession()
+        .then((data) => {
+          console.log(data)
+           return data
+        }
+        
+        )
+        .catch(err => err);
+
+      //  await console.log("Response",response.accessToken.payload.username)
       
-        fetch("https://vwgyys73bb.execute-api.us-east-1.amazonaws.com/dev/nft")
+        this.setState({
+            email : response.idToken.payload.email,
+            username : response.accessToken.payload.username,
+          });
+
+  
+      
+        fetch(`https://vwgyys73bb.execute-api.us-east-1.amazonaws.com/dev/nft?username=${response.accessToken.payload.username}`)
           .then(res => res.json())
           .then(
             (result) => {
@@ -49,6 +68,10 @@ class Mylist extends React.Component {
       return (<div>
       <h1>NFT's</h1>
       <div class="row">
+          <p>Name : {this.state.username}</p>
+          <p>Email : {this.state.email}</p>
+      </div>
+      <div class="row">
       {
       this.state.nft_array.map(nft => (
         <div class="col-sm-4">
@@ -58,7 +81,6 @@ class Mylist extends React.Component {
             <img class="card-img-top" style = {{width : '300px', height : '200px'}} src={nft.nft_uri} alt="Card image cap"></img>
             <p class="card-text">Owner {nft.username}</p>
             <p class="card-text">{"Price" + " " + "Eth" + " " + nft.nft_price}</p>
-            <a href="#" class="btn btn-primary">Sell NFT</a>
           </div>
         </div>
       </div>

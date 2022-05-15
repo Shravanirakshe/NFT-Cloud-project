@@ -1,6 +1,8 @@
 import React from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import { Auth } from 'aws-amplify';
+
 
 
 
@@ -12,13 +14,33 @@ class Nft extends React.Component {
                         name : '',
                         owner : '',
                         file_sample : null,
-                        fileSuccess : false };
-                        this.handleInputChange = this.handleInputChange.bind(this);
+                        fileSuccess : false ,
+                        auth_token : '',
+                        email : "",
+                        username : ""  
+                      };
   
     }
    
      
+    
+    async componentDidMount() {
+      const response = await Auth.currentSession()
+      .then((data) => {
+       
+         return data
+      }
+      
+      )
+      .catch(err => err);
 
+      await console.log("Response",response)
+      this.setState({
+          auth_token  : response.idToken.jwtToken,
+          email : response.idToken.payload.email,
+          username : response.accessToken.payload.username,
+        });
+      }
 
     onClickCreate = (event) => {
       
@@ -41,6 +63,10 @@ class Nft extends React.Component {
             myHeaders.append("x-amz-meta-name", this.state.name);
             myHeaders.append("x-amz-meta-owner", '' );
             myHeaders.append("x-amz-meta-price", this.state.price);
+            myHeaders.append("x-amz-meta-username", this.state.username);
+            myHeaders.append("x-amz-meta-email", this.state.email);
+
+            myHeaders.append("Authorization", "Bearer "+this.state.auth_token)
 
             var headers =  { 'name': this.state.name, 'owner': this.state.owner,'price': this.state.price }
 
@@ -95,45 +121,9 @@ class Nft extends React.Component {
   }
     
 
-    handleInputChange(event) {
-      let files = event.target.files;
-      let reader = new FileReader();
-      reader.readAsDataURL(files[0]);
-
-      reader.onload = (e) => {
-           
-          this.setState({
-              selectedFile: e.target.result,
-            })
-      }
-
-  }
-
-  submit(){
-      const formData = { image: this.state.selectedFile }
-      var myHeaders = new Headers();
-      //myHeaders.append("x-amz-meta-customLabels",  customLabels.value);
-      myHeaders.append("Content-Type", "image/jpeg");
-      myHeaders.append('Access-Control-Allow-Origin', '*');
-      myHeaders.append("name", this.state.name);
-      myHeaders.append("owner", this.state.owner );
-      myHeaders.append("price", this.state.price);
-
-       
-      var requestOptions = {
-        method: 'PUT',
-        headers: myHeaders,
-        body: formData,
-        redirect: 'follow'
-        };
-
-        fetch(`https://vwgyys73bb.execute-api.us-east-1.amazonaws.com/dev/nft_upload/finvest-images/${this.state.selectedFile.name}`, requestOptions)
-        .then(response => response.text())
-        .then(result => console.log(result)).then(alert("Photo uploaded successfully!"))
-        .catch(error => console.log('error', error));
 
 
-  }
+  
 
     // onClickCreate = (event) => {
     //     const formData = new FormData();
